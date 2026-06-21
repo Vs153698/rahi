@@ -66,6 +66,7 @@ export const SYNC_TABLES = {
   convoy_positions: 'convoy_positions',
   regroup_points: 'regroup_points',
   group_messages: 'group_messages',
+  hazard_reports: 'hazard_reports',
 } as const;
 export type SyncTableName = (typeof SYNC_TABLES)[keyof typeof SYNC_TABLES];
 
@@ -89,4 +90,5 @@ export const WRITABLE_SYNC_TABLES: readonly SyncTableName[] = [
   SYNC_TABLES.convoy_positions,
   SYNC_TABLES.regroup_points,
   SYNC_TABLES.group_messages,
+  SYNC_TABLES.hazard_reports,
 ] as const;

@@ -64,3 +64,5 @@ bucket_definitions:
       - SELECT * FROM regroup_points WHERE group_id = bucket.group_id
       # Group chat (Phase 8) — append-only, carried over mesh + cloud.
       - SELECT * FROM group_messages WHERE group_id = bucket.group_id
+      # Hazard reports along the trip (Phase 9) — visible ones; counter-merged.
+      - SELECT * FROM hazard_reports WHERE trip_id = bucket.trip_id
