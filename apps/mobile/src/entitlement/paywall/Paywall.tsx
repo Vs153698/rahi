@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Linking, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { TRIAL_DAYS } from '@rahi/shared';
 
@@ -89,8 +89,33 @@ export function Paywall({ reason, onUnlocked }: { reason?: string; onUnlocked: (
       </TouchableOpacity>
 
       {error ? <Text style={styles.error}>{error}</Text> : null}
+
+      {/* Required subscription disclosures (store review — rahi-docs/11 §2b). */}
+      <Text style={styles.disclosure}>
+        {`Rahi Pro is ${plan?.annualPrice ?? '₹999/yr'} or ${plan?.monthlyPrice ?? '₹199/mo'}, auto-renewing. ` +
+          `Your ${TRIAL_DAYS}-day free trial converts to a paid subscription unless cancelled at least 24h before it ends. ` +
+          `Payment is charged to your store account; manage or cancel anytime in your account settings.`}
+      </Text>
+      <View style={styles.links}>
+        <Text style={styles.link} onPress={() => void Linking.openURL(manageSubUrl())}>
+          Manage subscription
+        </Text>
+        <Text style={styles.link} onPress={() => void Linking.openURL('https://rahi.in/terms')}>
+          Terms
+        </Text>
+        <Text style={styles.link} onPress={() => void Linking.openURL('https://rahi.in/privacy')}>
+          Privacy
+        </Text>
+      </View>
     </View>
   );
+}
+
+/** Store-specific "manage subscription" deep link (required by store policy). */
+function manageSubUrl(): string {
+  return Platform.OS === 'ios'
+    ? 'https://apps.apple.com/account/subscriptions'
+    : 'https://play.google.com/store/account/subscriptions';
 }
 
 function PlanCard(props: {
@@ -133,4 +158,7 @@ const styles = StyleSheet.create({
   ctaText: { color: '#fff', fontSize: 16, fontWeight: '700' },
   restore: { color: lightTheme.info, textAlign: 'center', marginTop: 12 },
   error: { color: palette.alert, textAlign: 'center', marginTop: 8 },
+  disclosure: { color: lightTheme.textMuted, fontSize: 11, lineHeight: 16, marginTop: 16, textAlign: 'center' },
+  links: { flexDirection: 'row', justifyContent: 'center', gap: 16, marginTop: 8 },
+  link: { color: lightTheme.info, fontSize: 12 },
 });

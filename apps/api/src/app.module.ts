@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
 
+import { AccountModule } from './account/account.module';
 import { AdminModule } from './admin/admin.module';
 import { AuthModule } from './auth/auth.module';
 import { BillingModule } from './billing/billing.module';
 import { ConfigModule } from './config/config.module';
+import { CoverageModule } from './coverage/coverage.module';
+import { RecapModule } from './recap/recap.module';
 import { ExpensesModule } from './expenses/expenses.module';
 import { GroupsModule } from './groups/groups.module';
 import { HealthModule } from './health/health.module';
@@ -31,6 +34,9 @@ import { TripsModule } from './trips/trips.module';
     GroupsModule,
     TripPackModule,
     AdminModule,
+    RecapModule,
+    CoverageModule,
+    AccountModule,
   ],
 })
 export class AppModule {}
