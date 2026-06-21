@@ -44,5 +44,8 @@ jobs:
       - name: Test (incl. sync convergence — release blocker, rahi-docs/05 §8)
         run: pnpm turbo run test
 
+      - name: Rail separation guard (rahi-docs/09 Part C — release blocker)
+        run: bash scripts/check-rails.sh
+
       - name: Format check
         run: pnpm format:check

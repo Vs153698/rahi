@@ -260,6 +260,7 @@ const notes = new Table({
 const entitlement_cache_meta = new Table(
   {
     entitlement: column.text,
+    active: column.integer, // last known validated state (0/1)
     last_validated_at: column.text,
     grace_until: column.text,
   },
