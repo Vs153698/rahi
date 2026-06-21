@@ -1,0 +1,38 @@
+{
+  "name": "@rahi/config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "commonjs",
+  "main": "index.js",
+  "files": [
+    "eslint",
+    "prettier",
+    "tsconfig",
+    "jest"
+  ],
+  "exports": {
+    "./eslint/base": "./eslint/base.js",
+    "./eslint/node": "./eslint/node.js",
+    "./eslint/react-native": "./eslint/react-native.js",
+    "./prettier": "./prettier/index.js",
+    "./tsconfig/base.json": "./tsconfig/base.json",
+    "./tsconfig/node.json": "./tsconfig/node.json",
+    "./tsconfig/react-native.json": "./tsconfig/react-native.json",
+    "./jest/node": "./jest/node.js"
+  },
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.8.0",
+    "@typescript-eslint/parser": "^8.8.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-rahi": "workspace:*"
+  },
+  "peerDependencies": {
+    "eslint": ">=8",
+    "prettier": ">=3"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "prettier": "^3.3.3"
+  }
+}

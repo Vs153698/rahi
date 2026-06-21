@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "Rahi",
+    "slug": "rahi",
+    "scheme": "rahi",
+    "version": "0.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": false,
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "in.rahi.app"
+    },
+    "android": {
+      "package": "in.rahi.app"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-localization"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "//": "Non-secret config surfaced to the app. Secrets/keys come from EAS secrets mirroring Doppler (rahi-docs/12). TODO(phase-0-provisioning).",
+      "supabaseUrl": "",
+      "supabaseAnonKey": "",
+      "powersyncUrl": "",
+      "revenueCatApiKey": "",
+      "sentryDsn": "",
+      "apiBaseUrl": "http://localhost:3000"
+    }
+  }
+}
