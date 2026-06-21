@@ -29,6 +29,15 @@ export const envSchema = z.object({
   SENTRY_TRACES_SAMPLE_RATE: z.coerce.number().min(0).max(1).default(0.1),
 
   REDIS_URL: z.string().optional(),
+
+  // Maps / routing (Phase 2) — optional until provisioned. // verify
+  GRAPHHOPPER_BASE_URL: z.string().url().optional(),
+  OVERPASS_API_URL: z.string().url().optional(),
+  R2_ACCOUNT_ID: z.string().optional(),
+  R2_ACCESS_KEY_ID: z.string().optional(),
+  R2_SECRET_ACCESS_KEY: z.string().optional(),
+  R2_BUCKET_TILES: z.string().default('rahi-tiles'),
+  R2_PUBLIC_BASE_URL: z.string().url().optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;

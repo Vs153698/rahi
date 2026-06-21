@@ -4,6 +4,8 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from './config/config.module';
 import { ExpensesModule } from './expenses/expenses.module';
 import { HealthModule } from './health/health.module';
+import { MapsModule } from './maps/maps.module';
+import { RoutingModule } from './routing/routing.module';
 import { SupabaseModule } from './supabase/supabase.module';
 import { TripsModule } from './trips/trips.module';
 
@@ -15,6 +17,8 @@ import { TripsModule } from './trips/trips.module';
     AuthModule,
     TripsModule,
     ExpensesModule,
+    MapsModule,
+    RoutingModule,
   ],
 })
 export class AppModule {}
