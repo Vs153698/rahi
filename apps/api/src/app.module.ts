@@ -4,6 +4,7 @@ import { AuthModule } from './auth/auth.module';
 import { BillingModule } from './billing/billing.module';
 import { ConfigModule } from './config/config.module';
 import { ExpensesModule } from './expenses/expenses.module';
+import { GroupsModule } from './groups/groups.module';
 import { HealthModule } from './health/health.module';
 import { MapsModule } from './maps/maps.module';
 import { PaymentsModule } from './payments/payments.module';
@@ -25,6 +26,7 @@ import { TripsModule } from './trips/trips.module';
     PoiModule,
     BillingModule,
     PaymentsModule,
+    GroupsModule,
   ],
 })
 export class AppModule {}

@@ -247,6 +247,26 @@ const recaps = new Table({
   generated_at: column.text,
 });
 
+const convoy_positions = new Table({
+  group_id: column.text,
+  member_id: column.text,
+  geom: column.text,
+  heading: column.real,
+  speed_kmh: column.real,
+  client_updated_at: column.text,
+  updated_at: column.text,
+});
+
+const regroup_points = new Table({
+  group_id: column.text,
+  created_by: column.text,
+  geom: column.text,
+  label: column.text,
+  client_updated_at: column.text,
+  updated_at: column.text,
+  deleted_at: column.text,
+});
+
 // --- local-only (NOT synced): Phase 0 notes demo + offline entitlement cache ---
 // Kept local for the dev demo; not present in sync rules. The entitlement cache
 // backs offline grace (rahi-docs/05 §7b) and never syncs upstream.

@@ -64,4 +64,14 @@ export const SYNC_TABLE_SPECS: readonly SyncTableSpec[] = [
     bucket: 'group',
   },
   { table: SYNC_TABLES.recaps, writable: false, bucket: 'group' },
+  {
+    table: SYNC_TABLES.convoy_positions,
+    writable: writable(SYNC_TABLES.convoy_positions),
+    bucket: 'group',
+  },
+  {
+    table: SYNC_TABLES.regroup_points,
+    writable: writable(SYNC_TABLES.regroup_points),
+    bucket: 'group',
+  },
 ] as const;

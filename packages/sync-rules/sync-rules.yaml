@@ -59,3 +59,6 @@ bucket_definitions:
       - SELECT * FROM poi_corridor_sync WHERE trip_id = bucket.trip_id
       - SELECT * FROM track_points WHERE trip_id = bucket.trip_id
       - SELECT * FROM recaps WHERE trip_id = bucket.trip_id
+      # Convoy live positions + regroup pins (Phase 7) — group-scoped, writable.
+      - SELECT * FROM convoy_positions WHERE group_id = bucket.group_id
+      - SELECT * FROM regroup_points WHERE group_id = bucket.group_id
