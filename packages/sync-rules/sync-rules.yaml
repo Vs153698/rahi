@@ -62,3 +62,5 @@ bucket_definitions:
       # Convoy live positions + regroup pins (Phase 7) — group-scoped, writable.
       - SELECT * FROM convoy_positions WHERE group_id = bucket.group_id
       - SELECT * FROM regroup_points WHERE group_id = bucket.group_id
+      # Group chat (Phase 8) — append-only, carried over mesh + cloud.
+      - SELECT * FROM group_messages WHERE group_id = bucket.group_id

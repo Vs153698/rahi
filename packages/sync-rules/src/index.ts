@@ -74,4 +74,9 @@ export const SYNC_TABLE_SPECS: readonly SyncTableSpec[] = [
     writable: writable(SYNC_TABLES.regroup_points),
     bucket: 'group',
   },
+  {
+    table: SYNC_TABLES.group_messages,
+    writable: writable(SYNC_TABLES.group_messages),
+    bucket: 'group',
+  },
 ] as const;

@@ -5,6 +5,7 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-nativ
 import { SYNC_TABLES } from '@rahi/shared';
 
 import { RahiMap } from '../../src/maps';
+import { useMesh } from '../../src/mesh';
 import { convoyRepository, type ConvoyMember } from '../../src/features/convoy/convoy.repository';
 import { findLostMembers } from '../../src/features/convoy/lostMember';
 import { createGroup, joinGroupByCode } from '../../src/features/group/group.repository';
@@ -49,6 +50,9 @@ export default function ConvoyScreen() {
   }, [groupId]);
 
   const lost = findLostMembers(members);
+  const meshEnabled = useMesh((s) => s.enabled);
+  const peers = useMesh((s) => s.peers);
+  const inRange = Object.values(peers).filter((p) => p.reachability === 'in_range').length;
 
   if (!status.active) {
     return (
@@ -120,6 +124,13 @@ export default function ConvoyScreen() {
             </MapLibreGL.PointAnnotation>
           ))}
       </RahiMap>
+
+      {/* Honest mesh reachability (rahi-docs/06 §7): never imply coverage that isn't there. */}
+      <View style={styles.meshBar}>
+        <Text style={styles.meshText}>
+          {meshEnabled ? `Mesh on · ${inRange} in range` : 'Mesh off · online only'}
+        </Text>
+      </View>
     </View>
   );
 }
@@ -130,6 +141,8 @@ const styles = StyleSheet.create({
   markerText: { color: '#fff', fontWeight: '800', fontSize: 12 },
   lostBanner: { position: 'absolute', top: 12, left: 12, right: 12, zIndex: 10, backgroundColor: palette.alert, borderRadius: 10, padding: 10 },
   lostText: { color: '#fff', fontWeight: '700', textAlign: 'center' },
+  meshBar: { position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: 'rgba(21,18,13,0.85)', padding: 10 },
+  meshText: { color: palette.paper, textAlign: 'center', fontSize: 13, fontWeight: '600' },
   setup: { flex: 1, padding: 24, gap: 12, justifyContent: 'center', backgroundColor: lightTheme.bg },
   h: { fontSize: 24, fontWeight: '800', color: lightTheme.text, marginBottom: 8 },
   btn: { backgroundColor: lightTheme.primary, borderRadius: 12, padding: 16, alignItems: 'center' },

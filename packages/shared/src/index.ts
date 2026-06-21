@@ -10,6 +10,7 @@ export * from './entities/poi';
 export * from './i18n/keys';
 export * from './geo/track';
 export * from './group/group';
+export * from './mesh/protocol';
 export * from './safety';
 export * from './money/balances';
 export * from './payments/rails';
