@@ -2,6 +2,8 @@ import { Injectable, Logger } from '@nestjs/common';
 
 import { AppConfigService } from '../config/app-config.service';
 
+import type { SmsOtpProvider } from './otp-provider';
+
 /**
  * MSG91 SMS/OTP provider (DLT-template-ready — rahi-docs/10). Phase 0 wires the
  * interface and request shape; the actual OTP *generation + verification* is
@@ -12,7 +14,8 @@ import { AppConfigService } from '../config/app-config.service';
  * runs in "log-only" mode and never sends a real SMS. // verify provisioning
  */
 @Injectable()
-export class Msg91Service {
+export class Msg91Service implements SmsOtpProvider {
+  readonly name = 'msg91' as const;
   private readonly logger = new Logger(Msg91Service.name);
   private readonly endpoint = 'https://control.msg91.com/api/v5/otp';
 

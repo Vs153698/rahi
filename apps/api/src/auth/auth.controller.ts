@@ -2,8 +2,8 @@ import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
 import { z } from 'zod';
 
 import { JwtAuthGuard } from './jwt.guard';
-import { Msg91Service } from './msg91.service';
 import { OtpRateLimiter } from './otp.rate-limiter';
+import { OtpService } from './otp.service';
 
 const RequestOtpSchema = z.object({
   // +91 followed by a 10-digit Indian mobile number.
@@ -13,24 +13,26 @@ const RequestOtpSchema = z.object({
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly msg91: Msg91Service,
+    private readonly otp: OtpService,
     private readonly rateLimiter: OtpRateLimiter,
   ) {}
 
   /**
-   * Triggers an OTP send. Rate-limited per phone. The actual OTP lifecycle
-   * (issue + verify) is owned by Supabase Auth phone sign-in on the client;
-   * this endpoint exists for server-side rate limiting + the MSG91 path.
+   * Triggers an OTP send via the configured provider (MSG91 or Twilio).
+   * Rate-limited per phone. For MSG91 the OTP lifecycle is owned by Supabase Auth
+   * phone sign-in; Twilio Verify can also check the code server-side.
    */
   @Post('otp/request')
   @HttpCode(202)
-  async requestOtp(@Body() body: unknown): Promise<{ status: 'accepted' | 'rate_limited' }> {
+  async requestOtp(
+    @Body() body: unknown,
+  ): Promise<{ status: 'accepted' | 'rate_limited'; provider: 'msg91' | 'twilio' }> {
     const { phone } = RequestOtpSchema.parse(body);
     if (!this.rateLimiter.allow(phone)) {
-      return { status: 'rate_limited' };
+      return { status: 'rate_limited', provider: this.otp.activeProvider };
     }
-    await this.msg91.sendOtp(phone);
-    return { status: 'accepted' };
+    const { provider } = await this.otp.sendOtp(phone);
+    return { status: 'accepted', provider };
   }
 
   /** Example protected route — proves JWT verification end-to-end. */

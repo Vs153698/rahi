@@ -19,10 +19,18 @@ export const envSchema = z.object({
   SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
   SUPABASE_JWT_SECRET: z.string().optional(),
 
-  // MSG91 (OTP) — required once OTP goes live (Phase 0 Task 0.5). // verify
+  // OTP provider switch — 'msg91' (India/DLT) or 'twilio' (Verify API).
+  OTP_PROVIDER: z.enum(['msg91', 'twilio']).default('msg91'),
+
+  // MSG91 (OTP) — required when OTP_PROVIDER=msg91. // verify
   MSG91_AUTH_KEY: z.string().optional(),
   MSG91_OTP_TEMPLATE_ID: z.string().optional(),
   MSG91_SENDER_ID: z.string().optional(),
+
+  // Twilio Verify (OTP) — required when OTP_PROVIDER=twilio.
+  TWILIO_ACCOUNT_SID: z.string().optional(),
+  TWILIO_AUTH_TOKEN: z.string().optional(),
+  TWILIO_VERIFY_SERVICE_SID: z.string().optional(),
 
   // Sentry
   SENTRY_DSN: z.string().url().optional(),
