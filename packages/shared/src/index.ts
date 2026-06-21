@@ -6,6 +6,7 @@ export * from './constants';
 export * from './entities/note';
 export * from './entities/entitlement';
 export * from './entities/route';
+export * from './entities/poi';
 export * from './i18n/keys';
 export * from './geo/track';
 export * from './merge';

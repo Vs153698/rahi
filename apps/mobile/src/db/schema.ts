@@ -223,6 +223,12 @@ const poi_corridor_sync = new Table({
   trip_id: column.text,
   poi_id: column.text,
   distance_from_route_m: column.real,
+  // denormalized POI display fields (migration 0004) so corridor POIs sync from
+  // this single trip-scoped table.
+  category: column.text,
+  name: column.text,
+  geom: column.text,
+  tags: column.text,
   updated_at: column.text,
 });
 
