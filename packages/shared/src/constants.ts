@@ -63,6 +63,8 @@ export const SYNC_TABLES = {
   poi_corridor_sync: 'poi_corridor_sync',
   track_points: 'track_points',
   recaps: 'recaps',
+  convoy_positions: 'convoy_positions',
+  regroup_points: 'regroup_points',
 } as const;
 export type SyncTableName = (typeof SYNC_TABLES)[keyof typeof SYNC_TABLES];
 
@@ -83,4 +85,6 @@ export const WRITABLE_SYNC_TABLES: readonly SyncTableName[] = [
   SYNC_TABLES.kitty_contributions,
   SYNC_TABLES.settlements,
   SYNC_TABLES.track_points,
+  SYNC_TABLES.convoy_positions,
+  SYNC_TABLES.regroup_points,
 ] as const;
