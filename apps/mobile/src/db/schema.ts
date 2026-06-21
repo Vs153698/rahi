@@ -267,6 +267,14 @@ const regroup_points = new Table({
   deleted_at: column.text,
 });
 
+const group_messages = new Table({
+  group_id: column.text,
+  sender_member_id: column.text,
+  body: column.text,
+  created_at: column.text,
+  client_updated_at: column.text,
+});
+
 // --- local-only (NOT synced): Phase 0 notes demo + offline entitlement cache ---
 // Kept local for the dev demo; not present in sync rules. The entitlement cache
 // backs offline grace (rahi-docs/05 §7b) and never syncs upstream.
@@ -310,6 +318,9 @@ export const AppSchema = new Schema({
   [SYNC_TABLES.poi_corridor_sync]: poi_corridor_sync,
   [SYNC_TABLES.track_points]: track_points,
   [SYNC_TABLES.recaps]: recaps,
+  [SYNC_TABLES.convoy_positions]: convoy_positions,
+  [SYNC_TABLES.regroup_points]: regroup_points,
+  [SYNC_TABLES.group_messages]: group_messages,
   notes,
   entitlement_cache_meta,
 });
