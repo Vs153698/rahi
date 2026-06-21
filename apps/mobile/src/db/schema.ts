@@ -275,6 +275,19 @@ const group_messages = new Table({
   client_updated_at: column.text,
 });
 
+const hazard_reports = new Table({
+  reported_by: column.text,
+  trip_id: column.text,
+  geom: column.text,
+  kind: column.text,
+  note: column.text,
+  confirmations: column.integer,
+  flag_count: column.integer,
+  moderation_status: column.text,
+  created_at: column.text,
+  updated_at: column.text,
+});
+
 // --- local-only (NOT synced): Phase 0 notes demo + offline entitlement cache ---
 // Kept local for the dev demo; not present in sync rules. The entitlement cache
 // backs offline grace (rahi-docs/05 §7b) and never syncs upstream.
@@ -291,6 +304,26 @@ const entitlement_cache_meta = new Table(
     active: column.integer, // last known validated state (0/1)
     last_validated_at: column.text,
     grace_until: column.text,
+  },
+  { localOnly: true },
+);
+
+// Trip-pack weather (Phase 9) — cached per trip from Open-Meteo for offline use.
+const weather_cache = new Table(
+  {
+    trip_id: column.text,
+    forecast_json: column.text,
+    fetched_at: column.text,
+  },
+  { localOnly: true },
+);
+
+// Packing-checklist tick state (Phase 9) — device-local.
+const checklist_checks = new Table(
+  {
+    trip_id: column.text,
+    item_id: column.text,
+    checked: column.integer,
   },
   { localOnly: true },
 );
@@ -321,8 +354,11 @@ export const AppSchema = new Schema({
   [SYNC_TABLES.convoy_positions]: convoy_positions,
   [SYNC_TABLES.regroup_points]: regroup_points,
   [SYNC_TABLES.group_messages]: group_messages,
+  [SYNC_TABLES.hazard_reports]: hazard_reports,
   notes,
   entitlement_cache_meta,
+  weather_cache,
+  checklist_checks,
 });
 
 export type Database = (typeof AppSchema)['types'];

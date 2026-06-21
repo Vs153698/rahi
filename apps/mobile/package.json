@@ -23,6 +23,7 @@
     "expo-constants": "~16.0.0",
     "expo-crypto": "~13.0.0",
     "expo-file-system": "~17.0.0",
+    "expo-local-authentication": "~14.0.0",
     "expo-localization": "~15.0.0",
     "expo-location": "~17.0.0",
     "expo-router": "~3.5.0",

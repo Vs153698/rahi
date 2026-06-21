@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 
+import { AdminModule } from './admin/admin.module';
 import { AuthModule } from './auth/auth.module';
 import { BillingModule } from './billing/billing.module';
 import { ConfigModule } from './config/config.module';
@@ -11,6 +12,7 @@ import { PaymentsModule } from './payments/payments.module';
 import { PoiModule } from './poi/poi.module';
 import { RoutingModule } from './routing/routing.module';
 import { SupabaseModule } from './supabase/supabase.module';
+import { TripPackModule } from './trippack/trippack.module';
 import { TripsModule } from './trips/trips.module';
 
 @Module({
@@ -27,6 +29,8 @@ import { TripsModule } from './trips/trips.module';
     BillingModule,
     PaymentsModule,
     GroupsModule,
+    TripPackModule,
+    AdminModule,
   ],
 })
 export class AppModule {}

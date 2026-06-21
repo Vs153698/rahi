@@ -47,6 +47,9 @@ export const envSchema = z.object({
   RAZORPAY_KEY_ID: z.string().optional(),
   RAZORPAY_KEY_SECRET: z.string().optional(),
   RAZORPAY_WEBHOOK_SECRET: z.string().optional(),
+
+  // Admin moderation (Phase 9) — comma-separated admin user ids.
+  ADMIN_USER_IDS: z.string().optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;
