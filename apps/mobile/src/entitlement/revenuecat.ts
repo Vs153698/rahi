@@ -1,19 +1,53 @@
+import Purchases, { type PurchasesOffering, type CustomerInfo } from 'react-native-purchases';
+
+import { PRO_ENTITLEMENT } from '@rahi/shared';
+
 import { env } from '../config/env';
 
 /**
- * RevenueCat wiring (Task 0.8). Phase 0 is a STUB: no real products, the
- * configure call is a no-op unless a key is present, and entitlement resolution
- * is handled separately (always-false stub + the synced `entitlements` table
- * shape). Real products + paywall land in Phase 5 (rahi-docs/09, /14).
- *
- * Kept isolated so Phase 5 swaps the implementation without touching call sites.
+ * RevenueCat wiring (rahi-docs/09 A1/A3, Task 5.2). One `pro` entitlement maps
+ * both stores' products. Subscriptions are the STORE rail only — never Razorpay/
+ * UPI (rahi-docs/09 Part C). Server-side receipt validation + webhooks make the
+ * server authoritative; this client only initiates purchases and reads the
+ * resulting entitlement.
  */
-export async function configureRevenueCat(): Promise<void> {
-  if (!env.revenueCatApiKey) {
-    // Phase-0 stub: nothing to configure yet.
-    return;
-  }
-  // TODO(phase-5): Purchases.configure({ apiKey: env.revenueCatApiKey });
-  // Intentionally not importing react-native-purchases at runtime in Phase 0 to
-  // keep the stub side-effect-free until products exist.
+let configured = false;
+
+export function configureRevenueCat(appUserId?: string): void {
+  if (configured || !env.revenueCatApiKey) return;
+  Purchases.configure({ apiKey: env.revenueCatApiKey, appUserID: appUserId ?? null });
+  configured = true;
+}
+
+export async function getProOffering(): Promise<PurchasesOffering | null> {
+  if (!configured) return null;
+  const offerings = await Purchases.getOfferings();
+  return offerings.current ?? null;
+}
+
+/** True if the customer currently has an active `pro` entitlement (online check). */
+export function hasProEntitlement(info: CustomerInfo): boolean {
+  return info.entitlements.active[PRO_ENTITLEMENT] != null;
+}
+
+export async function purchaseAnnualOrMonthly(annual: boolean): Promise<boolean> {
+  const offering = await getProOffering();
+  const pkg = annual ? offering?.annual : offering?.monthly;
+  if (!pkg) throw new Error('Subscription plan unavailable');
+  const { customerInfo } = await Purchases.purchasePackage(pkg);
+  return hasProEntitlement(customerInfo);
+}
+
+/** Restore purchases — mandatory per store policy (rahi-docs/09 A5). */
+export async function restorePurchases(): Promise<boolean> {
+  const info = await Purchases.restorePurchases();
+  return hasProEntitlement(info);
+}
+
+/** Online validation: returns active flag + expiry for grace stamping. */
+export async function validatePro(): Promise<{ active: boolean; expiresAt: string | null }> {
+  if (!configured) return { active: false, expiresAt: null };
+  const info = await Purchases.getCustomerInfo();
+  const ent = info.entitlements.active[PRO_ENTITLEMENT];
+  return { active: ent != null, expiresAt: ent?.expirationDate ?? null };
 }

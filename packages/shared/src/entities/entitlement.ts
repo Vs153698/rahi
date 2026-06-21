@@ -70,3 +70,32 @@ export function resolveEntitlementStatus(
 
   return { active: false, inGrace: false, expiresAt: null };
 }
+
+/**
+ * Compute the offline grace deadline from the last successful online validation
+ * (rahi-docs/05 §7b, /09 A4). Stamped on each online launch/foreground; while
+ * offline the app trusts a cached active entitlement until this instant.
+ */
+export function computeGraceUntil(
+  lastValidatedAtMs: number,
+  graceDays: number = ENTITLEMENT_GRACE_DAYS,
+): string {
+  return new Date(lastValidatedAtMs + graceDays * 24 * 60 * 60 * 1000).toISOString();
+}
+
+/**
+ * Offline-aware resolution using the device-local cache (`entitlement_cache_meta`).
+ * If currently online-validated active → active. Else honour the cached active
+ * flag until `graceUntil`; past that, locked (server is authoritative on
+ * reconnect). Bounded, so a cancelled sub can't ride free forever.
+ */
+export function resolveWithGrace(
+  cache: { active: boolean; graceUntil: string | null } | null,
+  now: number = Date.now(),
+): EntitlementStatus {
+  if (!cache || !cache.active) return { active: false, inGrace: false, expiresAt: null };
+  if (!cache.graceUntil) return { active: true, inGrace: false, expiresAt: null };
+  const graceMs = Date.parse(cache.graceUntil);
+  if (graceMs > now) return { active: true, inGrace: true, expiresAt: cache.graceUntil };
+  return { active: false, inGrace: false, expiresAt: null };
+}

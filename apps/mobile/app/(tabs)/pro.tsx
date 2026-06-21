@@ -1,9 +1,7 @@
-import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { I18N_KEYS } from '@rahi/shared';
-
 import { useEntitlement } from '../../src/entitlement/useEntitlement';
+import { Paywall } from '../../src/entitlement/paywall/Paywall';
 import { useSession } from '../../src/state/session';
 
 /**
@@ -13,7 +11,6 @@ import { useSession } from '../../src/state/session';
  * Entitlement read works fully offline (grace applied — rahi-docs/05, /09).
  */
 export default function ProScreen() {
-  const { t } = useTranslation();
   const { status, loading } = useEntitlement('pro');
   const signOut = useSession((s) => s.signOut);
 
@@ -33,20 +30,15 @@ export default function ProScreen() {
           <Text style={styles.grace}>Offline grace active until {status.expiresAt}</Text>
         ) : null}
         <Text style={styles.body}>The offline suite is unlocked.</Text>
+        <Text style={styles.signout} onPress={() => void signOut()}>
+          Sign out
+        </Text>
       </View>
     );
   }
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{t(I18N_KEYS.paywall.title)}</Text>
-      <Text style={styles.body}>{t(I18N_KEYS.paywall.subtitle)}</Text>
-      <Text style={styles.locked}>🔒 Locked — Phase 0 stub (paywall lands in Phase 5)</Text>
-      <Text style={styles.signout} onPress={() => void signOut()}>
-        Sign out
-      </Text>
-    </View>
-  );
+  // Real contextual paywall (Phase 5). onUnlocked re-resolves via the hook.
+  return <Paywall onUnlocked={() => undefined} />;
 }
 
 const styles = StyleSheet.create({

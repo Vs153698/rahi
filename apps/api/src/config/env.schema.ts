@@ -38,6 +38,15 @@ export const envSchema = z.object({
   R2_SECRET_ACCESS_KEY: z.string().optional(),
   R2_BUCKET_TILES: z.string().default('rahi-tiles'),
   R2_PUBLIC_BASE_URL: z.string().url().optional(),
+
+  // Subscriptions (Phase 5) — RevenueCat server validation + webhook auth.
+  REVENUECAT_SECRET_API_KEY: z.string().optional(),
+  REVENUECAT_WEBHOOK_AUTH_HEADER: z.string().optional(),
+
+  // Trip money (Phase 5) — Razorpay pay-in. // verify
+  RAZORPAY_KEY_ID: z.string().optional(),
+  RAZORPAY_KEY_SECRET: z.string().optional(),
+  RAZORPAY_WEBHOOK_SECRET: z.string().optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;
