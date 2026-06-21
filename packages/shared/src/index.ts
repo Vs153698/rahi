@@ -9,4 +9,5 @@ export * from './entities/route';
 export * from './entities/poi';
 export * from './i18n/keys';
 export * from './geo/track';
+export * from './money/balances';
 export * from './merge';
